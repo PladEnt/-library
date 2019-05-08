@@ -1,0 +1,7 @@
+<ul>
+<% @books.each do |book| %>
+  <li><%= display_artist(book) %> - <%= link_to book.title, book_path(book) %></li>
+<% end %>
+</ul>
+<br>
+<%= link_to "Add New book", new_book_path %>
