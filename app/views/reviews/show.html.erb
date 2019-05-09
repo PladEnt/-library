@@ -1,0 +1,6 @@
+<h1><%= @review.name %></h1>
+<ul>
+  <% @review.songs.each do |song| %>
+    <li><%= link_to song.title, artist_song_path(@review, song) %></li>
+  <% end %>
+</ul>
