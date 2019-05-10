@@ -1,4 +1,11 @@
 <h1><%= link_to @book.title, book_path(@book) %></h1>
-<h3> by <%= display_auther(@book) %></h3>
+<h3> by <%= @book.auther %></h3>
+<% @book.reviews.each do |review| %>
+    <p>review</p>
+<% end %>
 
 <%= link_to "All books", books_path %>
+<br></br>
+<%= link_to "Add review", review_path(:id => @book.user.id) %>
+<br></br>
+<%= link_to "delete book", book_path(:id => @book.id), :method => :delete %>

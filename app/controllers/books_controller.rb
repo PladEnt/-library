@@ -8,7 +8,7 @@ class BooksController < ApplicationController
         @books = @auther.books
       end
     else
-      @books = book.all
+      @books = Book.all
     end
   end
 
