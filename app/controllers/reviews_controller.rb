@@ -1,30 +1,38 @@
 class ReviewsController < ApplicationController
   def show
-      @user = User.find(params[:id])
+      @review = Review.find(params[:id])
   end
 
   def new
-    @user = User.new
+    @book = Book.find(params[:book_id])
+    @review = Review.new
   end
 
   def create
-    @user = User.new(user_params)
+    @book = Book.find(review_params[:book_id])
+    @review = current_user.reviews.build(review_params)
 
-    if @user.save
-      redirect_to @user
+    if @review.save
+      redirect_to review_path(@review)
     else
       render :new
     end
   end
 
   def edit
-    @user = User.find(params[:id])
+    @review = Review.find(params[:id])
   end
     
   def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    flash[:notice] = "user deleted."
-    redirect_to users_path
+    @review = Review.find(params[:id])
+    @review.destroy
+    flash[:notice] = "review deleted."
+    redirect_to reviews_path
+  end
+
+  private
+
+  def review_params
+    params.require(:review).permit(:description, :book_id)
   end
 end

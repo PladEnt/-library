@@ -15,10 +15,34 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      session[:user_id] = @user.id
       redirect_to @user
     else
       render :new
     end
+  end
+
+  def login_form
+    if !logged_in?
+      render :login
+    else
+      redirect_to @user
+    end
+  end
+
+  def login
+    user = User.find_by(:name => params[:name])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect_to user_path(user)
+    else
+      redirect_to '/login'
+    end
+  end
+
+  def logout
+    session.clear
+    redirect_to '/login'
   end
 
   def edit
@@ -47,6 +71,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name)
+    params.require(:user).permit(:name, :password)
   end
 end
