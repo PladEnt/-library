@@ -1,6 +1,3 @@
-<h1><%= @review.name %></h1>
-<ul>
-  <% @review.songs.each do |song| %>
-    <li><%= link_to song.title, artist_song_path(@review, song) %></li>
-  <% end %>
-</ul>
+<h1><%= @review.description %></h1>
+<br />
+<%= button_to @review.book.title, book_path(@review.book), :method => :get%>

@@ -4,6 +4,13 @@
   <%= f.label :name %>
   <%= f.text_field :name %>
   <br />
+  <%= f.label :password %>
+  <%= f.password_field :password %>
+  <br />
 
   <%= f.submit %>
 <% end %>
+
+<form method="get" action="/login">
+  <input type="submit" value="Or login">
+</form>

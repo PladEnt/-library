@@ -1,9 +1,15 @@
 <h1><%= @user.name %></h1>
 <ul>
   <% @user.reviews.each do |review| %>
-    <li><%= link_to review.title, artist_song_path(@user, review) %></li>
+    <li><%= link_to review.description, users_path(@user, review) %></li>
   <% end %>
   <form method="get" action="/books">
     <input type="submit" value="To index">
   </form>
+
+  <form method="get" action="/users/<%=@user.id%>/edit">
+    <input type="submit" value="Edit user">
+  </form>
+
+  <%= button_to 'delete user', user_path(@user), :method => :delete %>
 </ul>

@@ -1,8 +1,10 @@
-<h1>Create an review</h1>
+<h1>Create a review</h1>
 
 <%= form_for @review  do |f| %>
   <%= f.label :name %>
-  <%= f.text_field :name %>
+  <%= f.text_field :description %>
+
+  <%= f.hidden_field :book_id, :value => @book.id %>
   <br />
 
   <%= f.submit %>
