@@ -1,3 +1,7 @@
 <h1><%= @review.description %></h1>
+<h3>rating: <%= '*'*@review.rating %></h3>
 <br />
 <%= button_to @review.book.title, book_path(@review.book), :method => :get%>
+<%= button_to "Edit review", edit_review_path, :method => :get %>
+
+<%= button_to "delete review", review_path(@review), :method => :delete %>

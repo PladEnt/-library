@@ -1,13 +1,19 @@
 <h1><%=@book.title %></h1>
 <h3> by <%= @book.auther %></h3>
-<% @book.reviews.each do |review| %>
-    <%= review.description %>
-    <br />
+<br/>
+<h2><%=link_to "Reviews", book_reviews_path(@book) %><h2/>
+<% @book.reviews.last(3).each do |review| %>
+    <h3><%=link_to review.description, book_review_path(@book, review) %><h3/>
 <% end %>
 
 <%= button_to "All books", books_path, :method => :get %>
-<%= button_to "Add review", new_book_review_path(@book) %>
-<%= button_to "delete book", book_path(@book), :method => :delete %>
+<%= button_to "Edit book", edit_book_path, :method => :get %>
+
+<%= button_to "Add review", new_book_review_path(@book), :method => :get %>
+
+<%if @book.user_id == current_user.id%>
+    <%= button_to "delete book", book_path(@book), :method => :delete %>
+<%end%>
 
 <h2> reviewed users </h2>
 <% @book.reviewed_users.each do |reviewed_user| %>

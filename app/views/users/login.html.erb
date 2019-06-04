@@ -1,8 +1,17 @@
+
+
 <h3>Login</h3>
 <%= form_tag ({controller: 'users', action: 'login', method: 'post'}) do %>
-  <input name="name">
+  name <input name="name">
   <br />
-  <input type="password" name="password">
+  email <input name="email">
+  <br />
+  password  <input type="password" name="password">
+
   <input type="submit" value="login">
 <% end %>
 <%= link_to('Log in with Facebook!', '/auth/facebook') %>
+<p>
+<form method="get" action="/users/new">
+  <input type="submit" value="Or sige up">
+</form>
