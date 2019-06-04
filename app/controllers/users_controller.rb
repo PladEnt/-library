@@ -74,6 +74,12 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    @user.books.each do |book|
+      book.reviews.each do |review|
+        review.destroy
+      end
+      book.destroy
+    end
     @user.destroy
     session.clear
     flash[:notice] = "user deleted."
