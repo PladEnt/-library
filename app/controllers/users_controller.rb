@@ -31,11 +31,22 @@ class UsersController < ApplicationController
   end
 
   def login
-    user = User.find_by(:name => params[:name])
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to user_path(user)
+    @user = User.find_by(:name => params[:name])
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      redirect_to user_path(@user)
     else
+      redirect_to '/login'
+    end
+  end
+
+  def facebook_login
+    if @user = User.find_by(:name => auth['info']['name'])
+      session[:user_id] = @user.id
+
+      redirect_to @user
+    else
+      flash[:notice] = "User not found."
       redirect_to '/login'
     end
   end
@@ -64,13 +75,18 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
+    session.clear
     flash[:notice] = "user deleted."
-    redirect_to users_path
+    redirect_to '/login'
   end
 
   private
 
+  def auth
+    request.env['omniauth.auth']
+  end
+
   def user_params
-    params.require(:user).permit(:name, :password)
+    params.require(:user).permit(:name, :email, :password)
   end
 end
