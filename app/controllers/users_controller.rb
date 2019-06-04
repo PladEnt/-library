@@ -36,6 +36,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to user_path(@user)
     else
+      flash[:notice] = "User not found."
       redirect_to '/login'
     end
   end
