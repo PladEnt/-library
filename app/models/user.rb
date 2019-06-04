@@ -4,5 +4,6 @@ class User < ApplicationRecord
     has_many :books
 
     validates :name, uniqueness: true
+    validates :email, uniqueness: true
     has_secure_password
 end
