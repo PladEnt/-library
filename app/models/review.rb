@@ -6,7 +6,6 @@ class Review < ApplicationRecord
     validates_presence_of :rating
 
     def self.positive(reviews)
-        positive_reviews = []
         reviews.collect do |review|
             if review.rating >= 3
                 review.description
@@ -15,7 +14,6 @@ class Review < ApplicationRecord
     end
 
     def self.negative(reviews)
-        negative_reviews = []
         reviews.collect do |review|
             if review.rating < 3
                 review.description
