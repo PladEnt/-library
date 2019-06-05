@@ -44,24 +44,30 @@ class BooksController < ApplicationController
 
   def update
     @book = Book.find(params[:id])
+    if @book.user.id == current_user.id
+      @book.update(book_params)
 
-    @book.update(book_params)
-
-    if @book.save
-      redirect_to @book
+      if @book.save
+        redirect_to @book
+      else
+        render :edit
+      end
     else
-      render :edit
+      flash[:notice] = "you don't own that book."
+      redirect_to @book
     end
   end
 
   def destroy
     @book = Book.find(params[:id])
-    @book.reviews.each do |review|
-      review.destroy
+    if @book.user.id == current_user.id
+      @book.destroy
+      flash[:notice] = "book deleted."
+      redirect_to books_path
+    else
+      flash[:notice] = "you don't own that book."
+      redirect_to @book
     end
-    @book.destroy
-    flash[:notice] = "book deleted."
-    redirect_to books_path
   end
 
   private

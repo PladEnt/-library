@@ -24,6 +24,7 @@ class UsersController < ApplicationController
 
   def login_form
     if !logged_in?
+      @user = User.new
       render :login
     else
       redirect_to @user
@@ -36,18 +37,23 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to user_path(@user)
     else
-      flash[:notice] = "User not found."
-      redirect_to '/login'
+      flash[:notice] = "invalid login info"
+      render :login
     end
   end
 
   def facebook_login
-    if @user = User.find_by(:name => auth['info']['name'])
+    @user = User.find_or_create_by(:email => auth['info']['email'])
+    @user.name = auth['info']['name']
+    @user.email = auth['info']['email']
+    @user.name = auth['info']['name']
+    if @user.password == nil
+      @user.password = auth['uid']
+    end
+    if @user.save
       session[:user_id] = @user.id
-
       redirect_to @user
     else
-      flash[:notice] = "User not found."
       redirect_to '/login'
     end
   end
@@ -63,28 +69,31 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    if @user.id == current_user.id
+      @user.update(user_params)
 
-    @user.update(user_params)
-
-    if @user.save
-      redirect_to @user
+      if @user.save
+        redirect_to @user
+      else
+        render :edit
+      end
     else
-      render :edit
+      flash[:notice] = "you don't own that user"
+      redirect_to current_user
     end
   end
 
   def destroy
     @user = User.find(params[:id])
-    @user.books.each do |book|
-      book.reviews.each do |review|
-        review.destroy
-      end
-      book.destroy
+    if @user.id == current_user.id
+      @user.destroy
+      session.clear
+      flash[:notice] = "user deleted."
+      redirect_to '/login'
+    else
+      flash[:notice] = "you don't own that user"
+      redirect_to current_user
     end
-    @user.destroy
-    session.clear
-    flash[:notice] = "user deleted."
-    redirect_to '/login'
   end
 
   private

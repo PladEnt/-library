@@ -28,13 +28,17 @@ class ReviewsController < ApplicationController
   end
   def update
     @review = Review.find(params[:id])
+    if @review.user_id == current_user.id
+      @review.update(review_params)
 
-    @review.update(review_params)
-
-    if @review.save
-      redirect_to @review
+      if @review.save
+        redirect_to @review
+      else
+        render :edit
+      end
     else
-      render :edit
+      flash[:notice] = "You crazy person, you don't own that!"
+      redirect_to @review
     end
   end
     

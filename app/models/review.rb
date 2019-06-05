@@ -5,19 +5,11 @@ class Review < ApplicationRecord
     validates_presence_of :description
     validates_presence_of :rating
 
-    def self.positive(reviews)
-        reviews.collect do |review|
-            if review.rating >= 3
-                review.description
-            end
-        end
+    def self.positive
+        where("rating >= 3")
     end
 
-    def self.negative(reviews)
-        reviews.collect do |review|
-            if review.rating < 3
-                review.description
-            end
-        end
+    def self.negative
+        where("rating < 3")
     end
 end
