@@ -15,8 +15,9 @@
 <%= form_for @review  do |f| %>
   <%= f.label :description %><br>
   <%= f.text_field :description %>
-
-  <%= f.label :rating %><br>
+  <br>
+  <%= f.label :rating %>
+  <br>
   <%= f.number_field 'rating', in: 1..5 %>
 
   <%= f.hidden_field :book_id, :value => @book.id %>
@@ -24,3 +25,5 @@
 
   <%= f.submit %>
 <% end %>
+
+

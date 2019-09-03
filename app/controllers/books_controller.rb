@@ -10,6 +10,10 @@ class BooksController < ApplicationController
     else
       @books = Book.all
     end
+    respond_to do |f|
+      f.html{}
+      f.json{render json: @books, status: 200}
+    end
   end
 
   def show
@@ -21,6 +25,10 @@ class BooksController < ApplicationController
       end
     else
       @book = Book.find(params[:id])
+    end
+    respond_to do |f|
+      f.html{}
+      f.json{render json: @book}
     end
   end
 

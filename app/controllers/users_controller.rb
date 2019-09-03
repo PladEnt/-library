@@ -27,7 +27,7 @@ class UsersController < ApplicationController
       @user = User.new
       render :login
     else
-      redirect_to @user
+      redirect_to current_user
     end
   end
 

@@ -1,6 +1,11 @@
 class ReviewsController < ApplicationController
   def index
     @book = Book.find(params[:book_id])
+    @reviews = @book.reviews
+    respond_to do |f|
+      f.html{}
+      f.json{render json: @reviews, status: 200}
+    end
   end
 
   def show
